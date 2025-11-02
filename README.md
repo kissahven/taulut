@@ -8,4 +8,25 @@ Tarkoituksena on luoda sovellus, jossa käyttäjä pystyy tekemään ja julkaise
   * Käyttäjä pystyy etsimään ilmoituksia hakusanalla tai avainsanalla. Käyttäjä pystyy hakemaan sekä itse lisäämiään että muiden käyttäjien lisäämiä ilmoituksia.
   * Sovelluksessa on käyttäjän sivut eli käyttäjän taulu. Taulussa näkyvät niin itse tehdyt julkaisut kuin myös käyttäjän tallennetut julkaisut.
   * Käyttäjä pystyy valitsemaan julkaisulle yhden tai useamman avainsanan. Mahdolliset avainsanat ovat tietokannassa.
-  * Sovelluksessa on pääasiallisen tietokohteen lisäksi toissijainen tietokohde, joka täydentää pääasiallista tietokohdetta. Käyttäjät pystyvät lisäämään toisten käyttäjien ilmoituksiin kommentteja. 
+  * Sovelluksessa on pääasiallisen tietokohteen lisäksi toissijainen tietokohde, joka täydentää pääasiallista tietokohdetta. Käyttäjät pystyvät lisäämään toisten käyttäjien ilmoituksiin kommentteja.
+
+## Sovelluksen asennus
+
+Asenna `flask`-kirjasto:
+
+```
+$ pip install flask
+```
+
+Luo tietokannan taulut ja lisää alkutiedot:
+
+```
+$ sqlite3 database.db < schema.sql
+$ sqlite3 database.db < init.sql
+```
+
+Voit käynnistää sovelluksen näin:
+
+```
+$ flask run
+```
