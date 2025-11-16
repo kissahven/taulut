@@ -1,0 +1,8 @@
+body {
+    margin: auto;
+    max-width: 50em;
+    font-family: Georgia;
+    background-color: #ffc3e1;
+    color: mediumblue;
+    text-shadow: 0px 0px 20px #122dfc;
+}

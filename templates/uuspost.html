@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Uusi julkaisu</title>
+</head>
+<link rel="stylesheet" href="/static/main.css"
+
+<body>
+    <h1>Luo uusi julkaisu</h1>
+
+  <form action="/create_item" method="post">
+    <p>
+      Otsikko: <br />
+      <input type="text" name="title" />
+    </p>
+    <p>
+        Sisältö: <br />
+        <textarea name="body" rows="10" cols="60"></textarea>
+        <!--En jostai syyst saa noita koko hommeleita toimiin mut sitä mietitää sit myöhemmi. Muute haluisin et molemmat palkit ois vähä laajemmat--> >
+    </p>
+    <input type="submit" value="Postaa" />
+  </form>
+</body>
+
+</html>

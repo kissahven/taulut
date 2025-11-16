@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Le Etusivu</title>
+</head>
+
+<link rel="stylesheet" href="/static/main.css"
+
+<body>
+    <h1>Teretulemaks!</h1>
+
+  {% if session.username %}
+  <p>
+    Olet kirjautunut nimellä {{ session.username }}
+  </p>
+  <p>
+    <a href="/new_item">Luo uusi julkaisu</a>
+    <a href="/logout">Kirjaudu ulos</a>
+  </p>
+  {% else %}
+  <form action="/login" method="post">
+    <p>
+      Tunnus: <br />
+      <input type="text" name="username" />
+    </p>
+    <p>
+      Salasana: <br />
+      <input type="password" name="password" />
+    </p>
+    <input type="submit" value="Kirjaudu" />
+  </form>
+  <p>
+    Uusi 
+    <a href="/register">Luo uusi käyttäjä</a>
+  </p>
+  {% endif %}
+</body>
+
+</html>
