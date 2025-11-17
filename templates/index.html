@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Le Etusivu</title>
+  <title>Taulut</title>
 </head>
 
 <link rel="stylesheet" href="/static/main.css"
@@ -18,6 +18,21 @@
     <a href="/new_item">Luo uusi julkaisu</a>
     <a href="/logout">Kirjaudu ulos</a>
   </p>
+  <h2>Postaukset</h2>
+
+    {%for post in posts %}
+    <div class="box">
+        <a href="/post/{{post.id}}">{{post.title}}</a>
+        <br>
+        {{post.body}}
+    </div>
+    <br>
+    <br>
+    {% endfor %}
+
+  <p>
+
+  </p>
   {% else %}
   <form action="/login" method="post">
     <p>
@@ -30,8 +45,7 @@
     </p>
     <input type="submit" value="Kirjaudu" />
   </form>
-  <p>
-    Uusi 
+  <p> 
     <a href="/register">Luo uusi käyttäjä</a>
   </p>
   {% endif %}

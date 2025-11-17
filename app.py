@@ -4,6 +4,7 @@ from flask import redirect, render_template, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import db
 import config
+import posts
 
 
 app = Flask(__name__)
@@ -13,7 +14,8 @@ app.secret_key = config.secret_key
 #Etusivu??
 @app.route("/")
 def index():
-    return render_template("index.html")
+    all_posts = posts.get_posts()
+    return render_template("index.html", posts = all_posts)
 
 
 #Tunnuksen luonti
@@ -83,7 +85,10 @@ def create_item():
     title = request.form["title"]
     body = request.form["body"]
 
-    sql = "INSERT INTO items (poster_id, title, body) VALUES (?, ?, ?)"
-    db.execute(sql, [poster_id, title, body])
+    posts.add_post(poster_id, title, body)
 
     return redirect("/")
+
+@app.route("/post/<int:post_id>")
+def show_post(post_id):
+    post = posts.get_post(post_id)
