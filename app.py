@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.secret_key = config.secret_key
 
 
-#Etusivu??
+
 @app.route("/")
 def index():
     all_posts = posts.get_posts()
@@ -39,14 +39,7 @@ def create():
     except sqlite3.IntegrityError:
         return "VIRHE: tunnus on jo varattu"
 
-    return "Tunnus luotu"
-
-
-#########################################################################
-#täs on nyt toi index.html ja login.html molemmat
-#login.html ei taida rn tehä mitää ja salee tuli vaa vahingos kopsattuu kahesti
-#mut emt ehk sit tekee viä jotai
-#tää nyt jääkööt täl kertaa bäckburnerille
+    return "Tunnus luotu. Sori, joudut palaamaan etusivulle manuaalisesti :p"
 
 
 @app.route("/login", methods=["POST"])
@@ -75,11 +68,11 @@ def logout():
 
 
 #Uuden postauksen luominen
-@app.route("/new_item")
+@app.route("/new_post")
 def new_item():
     return render_template("uuspost.html")
 
-@app.route("/create_item", methods=["POST"])
+@app.route("/create_post", methods=["POST"])
 def create_item():
     poster_id = session["user_id"]
     title = request.form["title"]
@@ -89,6 +82,8 @@ def create_item():
 
     return redirect("/")
 
-@app.route("/post/<int:post_id>")
-def show_post(post_id):
-    post = posts.get_post(post_id)
+
+@app.route("/post/<int:item_id>")
+def show_post(item_id):
+    post = posts.get_post(item_id)
+    return render_template("post.html", post = post)

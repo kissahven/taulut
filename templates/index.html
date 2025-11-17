@@ -25,6 +25,12 @@
         <a href="/post/{{post.id}}">{{post.title}}</a>
         <br>
         {{post.body}}
+        {% if poster_id == session.user_id %}
+        <p>
+            <a href="/edit/{{post.id}}">Muokkaa</a>
+            <a href="/delete/{{post.id}}">Poista</a>
+        </p>
+        {% endif %}
     </div>
     <br>
     <br>
