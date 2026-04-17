@@ -10,19 +10,15 @@ import posts
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
-
-
 @app.route("/")
 def index():
     all_posts = posts.get_posts()
     return render_template("index.html", posts = all_posts)
 
-
 #Tunnuksen luonti
 @app.route("/register")
 def register():
     return render_template("register.html")
-
 
 @app.route("/create", methods=["POST"])
 def create():
@@ -40,7 +36,6 @@ def create():
         return "VIRHE: tunnus on jo varattu"
 
     return "Tunnus luotu. Sori, joudut palaamaan etusivulle manuaalisesti :p"
-
 
 @app.route("/login", methods=["POST"])
 def login():
@@ -64,8 +59,6 @@ def logout():
     del session["user_id"]
     del session["username"]
     return redirect("/")
-
-
 
 #Uuden postauksen luominen
 @app.route("/new_post")
