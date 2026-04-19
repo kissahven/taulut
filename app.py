@@ -75,8 +75,8 @@ def create_item():
 
     return redirect("/")
 
-
-@app.route("/post/<int:item_id>")
-def show_post(item_id):
-    post = posts.get_post(item_id)
+#Viewing a post
+@app.route("/post/<int:post_id>")
+def show_post(post_id):
+    post = posts.get_post(post_id)
     return render_template("post.html", post = post)

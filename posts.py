@@ -8,13 +8,13 @@ def get_posts():
     sql = "SELECT id, title, body FROM items"
     return db.query(sql)
 
-def get_post(item_id):
+def get_post(post_id):
     sql = """ SELECT items.poster_id,
                     items.title,
                     items.body,
                     users.username
                 FROM items, users
                 WHERE users.id = items.poster_id 
-                AND items.id = ?
-                ;"""
-    return db.query(sql, [item_id])
+                AND items.id = ?"""
+    return db.query(sql, [post_id])
+
