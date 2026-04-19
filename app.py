@@ -79,4 +79,4 @@ def create_item():
 @app.route("/post/<int:post_id>")
 def show_post(post_id):
     post = posts.get_post(post_id)
-    return render_template("post.html", post = post)
+    return render_template("post.html", post=post)
