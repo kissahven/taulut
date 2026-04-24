@@ -8,8 +8,8 @@ body {
 
 .box {
     background-color: whitesmoke;
-    box-shadow: 0px 0px 30px #122dfc;
+    box-shadow: 0px 0px 40px #122dfc;
     border: none;
     padding: 10px;
-    color: black;
+    color: mediumblue;
 }
