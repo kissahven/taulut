@@ -23,10 +23,14 @@ def register():
 @app.route("/create", methods=["POST"])
 def create():
     username = request.form["username"]
+    if len(username) < 1:
+        return "nimi ei sovi"
     password1 = request.form["password1"]
+    if len(password1) < 1:
+        return "salasana ei sovi"
     password2 = request.form["password2"]
     if password1 != password2:
-        return "VIRHE: salasanat eivät ole samat/täsmää"
+        return "VIRHE: salasanat eivät täsmää"
     password_hash = generate_password_hash(password1)
 
     try:
@@ -35,7 +39,7 @@ def create():
     except sqlite3.IntegrityError:
         return "VIRHE: tunnus on jo varattu"
 
-    return "Tunnus luotu. Sori, joudut palaamaan etusivulle manuaalisesti :p"
+    return render_template("user_registered.html")
 
 @app.route("/login", methods=["POST"])
 def login():

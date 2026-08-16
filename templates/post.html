@@ -9,9 +9,9 @@
 <body>
     <h1>{{ post.title }}</h1>
     <div class="box">
-        {{ post.username }}
         {{post.body}}
     </div>
+    <p>{{ post.username }}</p>
           {% if poster_id == session.user_id %}
         <p>
             <a href="/edit/{{post.id}}">Muokkaa</a>
