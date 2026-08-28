@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Muokkaus</title>
+</head>
+
+<body>
+    <h2>Muokkaus</h2>
+    <form action="/update_post" method="post">
+        <p>
+            <input type="hidden" name="post_id" value="{{post.id}}" />
+        </p>
+        Nimi: <br />
+        <p> 
+            <input type="text" name="title" value="{{post.title}}" maxlength="100" required/>
+        </p>
+        <p>
+            Sisältö: <br />
+            <textarea name="body" rows="10" cols="60" maxlength="7000" required>{{post.body}}</textarea>
+        </p>
+        <input type="submit" value="Muokkaa"/>
+    </form>
+</body>
+<p>
+    <a href="/delete/{{post.id}}"> Poista</a>
+</p>

@@ -12,11 +12,11 @@
   <form action="/create_post" method="post">
     <p>
       Otsikko: <br />
-      <input type="text" name="title" />
+      <input type="text" name="title" maxlength="100" required/>
     </p>
     <p>
         Sisältö: <br />
-        <textarea name="body" rows="10" cols="60"></textarea>
+        <textarea name="body" rows="10" cols="60" maxlength="7000"></textarea>
     </p>
     <input type="submit" value="Postaa" />
   </form>

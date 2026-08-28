@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Haku</title>
+</head>
+<link rel="stylesheet" href="/static/main.css">
+
+<body>
+    <h2>Haku</h2>
+  
+    <form action="/search_posts" method="get">
+        <p>
+            <label for="query">Hakukenttä</label>:
+            <input type="text" name="query" id="query" value="{{ query }}">
+            <input type="submit" value="Hae">
+        </p>
+    </form>
+
+    {% if query %}
+    <h3>Tulokset</h3>
+
+    {% for result in results %}
+     <div class="box">
+        <a href="/post/{{result.id}}">{{result.title}}</a>
+        <br>
+        {{result.body}}
+        <br>
+    </div>
+    <br>
+    {% endfor %}
+    {% endif %}
+</body>
+
+</html>
