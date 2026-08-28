@@ -2,18 +2,14 @@
 <html>
 
 <head>
-  <title>Kirjautuminen</title>
+  <title>Taulut</title>
 </head>
 
 <body>
-  {% if session.username %}
-  <p>
-    Olet kirjautunut nimellä {{ session.username }}
-  </p>
+  <h1>Kirjautuminen</h1>
   <p>
     <a href="/logout">Kirjaudu ulos</a>
   </p>
-  {% else %}
   <form action="/login" method="post">
     <p>
       Tunnus: <br />
@@ -25,7 +21,10 @@
     </p>
     <input type="submit" value="Kirjaudu" />
   </form>
-  {% endif %}
+  <p> 
+    Uusi käyttäjä?
+    <a href="/register">Luo uusi käyttäjä</a>
+  </p>
 </body>
 
 </html>
