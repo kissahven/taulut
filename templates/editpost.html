@@ -9,6 +9,7 @@
     <form action="/update_post" method="post">
         <p>
             <input type="hidden" name="post_id" value="{{post.id}}" />
+            <input type="hidden" name="csrf_token" value="{{session.csrf_token}}" />
         </p>
         Nimi: <br />
         <p> 

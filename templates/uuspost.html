@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Uusi julkaisu</title>
+  <title>Uusi postaus</title>
 </head>
 <link rel="stylesheet" href="/static/main.css">
 
@@ -15,9 +15,10 @@
       <input type="text" name="title" maxlength="100" required/>
     </p>
     <p>
-        Sisältö: <br />
-        <textarea name="body" rows="10" cols="60" maxlength="7000"></textarea>
+      Sisältö: <br />
+      <textarea name="body" rows="10" cols="60" maxlength="7000"></textarea>
     </p>
+    <input type="hidden" name="csrf_token" value="{{session.csrf_token}}" />
     <input type="submit" value="Postaa" />
   </form>
 </body>

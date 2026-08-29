@@ -31,3 +31,18 @@ def search_posts(query):
             ORDER BY id DESC"""
     like = "%" + query + "%"
     return db.query(sql, [like, like])
+
+def add_comment(commenter_id, post_id, comment):
+    sql = "INSERT INTO comments (commenter_id, post_id, comment) VALUES (?, ?, ?)"
+    db.execute(sql, [commenter_id, post_id, comment])
+
+def get_comments(post_id):
+    sql = """SELECT c.id, c.commenter_id, c.comment, u.username, u.id
+            FROM comments c
+            LEFT JOIN users u ON c.commenter_id = u.id
+            WHERE c.post_id = ? """
+    return db.query(sql, [post_id])
+
+def delete_all_comments(post_id):
+    sql = """DELETE FROM comments WHERE post_id = ?"""
+    db.execute(sql, [post_id])

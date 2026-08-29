@@ -1,6 +1,8 @@
 from flask import Flask
 import sqlite3
 from flask import redirect, render_template, request, session, abort, flash
+import secrets
+
 import db
 import config
 import posts
@@ -12,7 +14,13 @@ app.secret_key = config.secret_key
 
 def require_login():
     if "user_id" not in session:
-        return redirect("/login")
+        abort(403)
+
+def check_csrf():
+    if "csrf_token" not in request.form:
+        abort(403)
+    if request.form["csrf_token"] != session["csrf_token"]:
+        abort(403)
 
 @app.route("/home")
 def home():
@@ -22,9 +30,7 @@ def home():
 
 @app.route("/")
 def index():
-    if "user_id" in session:
-        return redirect("/home")
-    return redirect("/login")
+    return render_template("index.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -38,8 +44,8 @@ def login():
         if user_id :
             session["user_id"] = user_id
             session["username"] = username
-            #session["csrf_token"] = secrets.token_hex(16)
-            return redirect("/")
+            session["csrf_token"] = secrets.token_hex(16)
+            return redirect("/home")
         else:
             flash("VIRHE: väärä tunnus tai salasana")
             return redirect("/login")
@@ -76,26 +82,32 @@ def create():
         return redirect("/register")
     return render_template("user_registered.html")
 
+#Posts
 @app.route("/new_post")
 def new_item():
     return render_template("uuspost.html")
 
 @app.route("/create_post", methods=["POST"])
-def create_item():
+def create_post():
     require_login()
+    check_csrf()
+
     poster_id = session["user_id"]
     title = request.form["title"]
+    if not title or len(title) > 100:
+            abort(403)
     body = request.form["body"]
-    if not title or len(title) > 100 or len(body) > 7000:
+    if not body or len(body) > 7000:
         abort(403)
 
     posts.add_post(poster_id, title, body)
-    return redirect("/")
+    return redirect("/home")
 
 @app.route("/post/<int:post_id>")
 def show_post(post_id):
     post = posts.get_post(post_id)
-    return render_template("post.html", post=post)
+    comments = posts.get_comments(post_id)
+    return render_template("post.html", post=post, comments=comments)
 
 @app.route("/edit/<int:post_id>")
 def edit_post(post_id):
@@ -112,6 +124,7 @@ def edit_post(post_id):
 @app.route("/update_post", methods=["POST"])
 def update_post():
     require_login()
+    check_csrf()
 
     post_id = request.form["post_id"]
     post = posts.get_post(post_id)
@@ -134,6 +147,7 @@ def update_post():
 @app.route("/delete/<int:post_id>", methods=["GET", "POST"])
 def remove_post(post_id):
     require_login()
+
     post = posts.get_post(post_id)
 
     if not post:
@@ -145,7 +159,9 @@ def remove_post(post_id):
         return render_template("removepost.html", post=post)
 
     if request.method == "POST":
+        check_csrf()
         if "continue" in request.form:
+            posts.delete_all_comments(post_id)
             posts.remove_post(post_id)
             return redirect("/home")
         else:
@@ -164,8 +180,27 @@ def search_posts():
 @app.route("/user/<int:user_id>")
 def show_user(user_id):
     require_login()
+
     user = users.get_user(user_id)
     if not user:
         abort(404)
     user_posts = users.get_posts(user_id)
     return render_template("user_page.html", user=user, posts=user_posts)
+
+#Commenting on posts
+@app.route("/new_comment", methods=["POST"])
+def new_comment():
+    require_login()
+    check_csrf()
+
+    commenter_id = session["user_id"]
+    post_id = request.form["post_id"]
+    comment = request.form["comment"]
+    if not comment or len(comment) > 1000:
+        abort(403)
+
+    try:
+        posts.add_comment(commenter_id, post_id, comment)
+    except sqlite3.IntegrityError:
+        abort(403)
+    return redirect("/post/" + str(post_id))

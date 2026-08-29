@@ -8,47 +8,10 @@
 <link rel="stylesheet" href="/static/main.css">
 
 <body>
-    <h1>Taulut</h1>
-
-  {% if session.username %}
-  <p>
-    Olet kirjautunut nimellä {{ session.username }}
-  </p>
-  <p>
-    <a href="/new_post">Luo uusi julkaisu</a>
-    <a href="/logout">Kirjaudu ulos</a>
-  </p>
-  <h2>Postaukset</h2>
+    <h1>Tervetuloa</h1>
     <br>
-    {%for post in posts %}
-    <div class="box">
-        <a href="/post/{{post.id}}">{{post.title}}</a>
-        <br>
-        {{post.body}}
-    </div>
-    <br>
-    <br>
-    {% endfor %}
-
-  <p>
-
-  </p>
-  {% else %}
-  <form action="/login" method="post">
-    <p>
-      Tunnus: <br />
-      <input type="text" name="username" />
-    </p>
-    <p>
-      Salasana: <br />
-      <input type="password" name="password" />
-    </p>
-    <input type="submit" value="Kirjaudu" />
-  </form>
-  <p> 
-    <a href="/register">Luo uusi käyttäjä</a>
-  </p>
-  {% endif %}
+    <a href="/login">Kirjaudu</a>
+    <a href="/register">Luo tunnukset</a>
 </body>
 
 </html>

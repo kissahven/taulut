@@ -10,7 +10,7 @@
 <body>
     <h1>Taulut</h1>
   <p>
-    Olet kirjautunut käyttäjällä {{ session.username }}
+    Olet kirjautunut käyttäjällä <a href="/user/{{session.id}}">{{session.username}}</a>
   </p>
   <p>
     <a href="/new_post">Luo uusi taulu</a>

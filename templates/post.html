@@ -8,18 +8,37 @@
 
 <body>
     <br>
-    <a href="/">Etusivulle</a>
+    <a href="/home">Etusivulle</a>
     <h2>{{ post.title }}</h2>
     <div class="box">
         {{post.body}}
     </div>
-    <p>{{ post.username }}</p>
+    <p><a href="/user/{{post.poster_id}}">{{post.username}}</a> </p>
         {% if post.poster_id == session.user_id %}
         <p>
             <a href="/edit/{{post.id}}">Muokkaa</a>
             <a href="/delete/{{post.id}}">Poista</a>
         </p>
         {% endif %}
+
+    <h3>Kommentit</h3>
+    {% for comment in comments %}
+    <p><a href="/user/{{comment.commenter_id}}">{{comment.username}}</a></p>
+    {{comment.comment}}
+    <br>
+    {% endfor %}
+
+    {% if session.user_id %}
+    <form action="/new_comment" method="post">
+        <p>
+            <textarea name="comment" rows="5" cols="50" maxlength="1000" required></textarea>
+        </p>
+        <input type="hidden" name="post_id" value="{{post.id}}" />
+        <input type="hidden" name="csrf_token" value="{{session.csrf_token}}" />
+        <input type="submit" value="Kommentoi" />
+    </form>
+    {% endif %}
+
 </body>
 
 </html>
