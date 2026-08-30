@@ -1,7 +1,7 @@
 import db
 
 def add_post(poster_id, title, body, classes):
-    sql = "INSERT INTO items (poster_id, title, body) VALUES (?, ?, ?)"
+    sql = "INSERT INTO posts (poster_id, title, body) VALUES (?, ?, ?)"
     db.execute(sql, [poster_id, title, body])
 
     post_id = db.last_insert_id()
@@ -10,19 +10,19 @@ def add_post(poster_id, title, body, classes):
         db.execute(sql, [post_id, class_name, class_value])
 
 def get_posts():
-    sql = "SELECT id, title, body FROM items ORDER BY id DESC"
+    sql = "SELECT id, title, body FROM posts ORDER BY id DESC"
     return db.query(sql)
 
 def get_post(post_id):
     sql = """SELECT i.id, i.poster_id, i.title, i.body, u.id, u.username
-                FROM items i
+                FROM posts i
                 LEFT JOIN users u ON i.poster_id = u.id
                 WHERE i.id = ?"""
     rows = db.query(sql, [post_id])
     return rows[0] if rows else None
 
 def update_post(post_id, title, body, classes):
-    sql = "UPDATE items SET title = ?, body = ? WHERE id = ?"
+    sql = "UPDATE posts SET title = ?, body = ? WHERE id = ?"
     db.execute(sql, [title, body, post_id])
 
     sql = "DELETE FROM post_classes WHERE post_id = ?"
@@ -36,12 +36,12 @@ def remove_post(post_id):
     db.execute(sql, [post_id])
     sql = "DELETE FROM post_classes WHERE post_id = ?"
     db.execute(sql, [post_id])
-    sql = "DELETE FROM items WHERE id = ?"
+    sql = "DELETE FROM posts WHERE id = ?"
     db.execute(sql, [post_id])
 
 def search_posts(query):
     sql = """SELECT id, title, body
-            FROM items
+            FROM posts
             WHERE title LIKE ? OR body LIKE ?
             ORDER BY id DESC"""
     like = "%" + query + "%"

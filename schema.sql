@@ -3,7 +3,7 @@ id INTEGER PRIMARY KEY,
 username TEXT UNIQUE,
 password_hash TEXT );
 
-CREATE TABLE items (
+CREATE TABLE posts (
 id INTEGER PRIMARY KEY,
 poster_id INTEGER REFERENCES users,
 title TEXT,
@@ -12,12 +12,12 @@ body TEXT );
 CREATE TABLE comments (
 id INTEGER PRIMARY KEY,
 commenter_id INTEGER REFERENCES users,
-post_id INTEGER REFERENCES items,
+post_id INTEGER REFERENCES posts,
 comment TEXT );
 
 CREATE TABLE saved (
 id INTEGER PRIMARY KEY,
-post_id INTEGER REFERENCES items,
+post_id INTEGER REFERENCES posts,
 saver_id INTEGER REFERENCES users);
 
 CREATE TABLE classes (
@@ -27,7 +27,7 @@ value TEXT );
 
 CREATE TABLE post_classes (
 id INTEGER PRIMARY KEY,
-post_id REFERENCES items,
+post_id REFERENCES posts,
 name TEXT,
 value TEXT );
 

@@ -27,5 +27,5 @@ def get_user(user_id):
     return result[0] if result else None
 
 def get_posts(user_id):
-    sql = "SELECT id, title, body FROM items WHERE poster_id = ? ORDER BY id DESC"
+    sql = "SELECT id, title, body FROM posts WHERE poster_id = ? ORDER BY id DESC"
     return db.query(sql, [user_id])
