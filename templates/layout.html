@@ -18,6 +18,7 @@
 
     {% if session.user_id %}
     <p>
+        <br>
         <input type="hidden" name="user_id" value="{{session.id}}" />
         Olet kirjautunut käyttäjällä <a href="/your_page"><b>{{session.username}}</b></a> <br>
         <br>
