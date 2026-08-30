@@ -1,10 +1,8 @@
-<!DOCTYPE html>
+{% extends "layout.html" %}
 
-<head>
-    <title>Muokkaus</title>
-</head>
+{% block title %}Muokkaus{% endblock %}
 
-<body>
+{% block content %}
     <h2>Muokkaus</h2>
     <form action="/update_post" method="post">
         <p>
@@ -34,7 +32,7 @@
         {% endfor %}
         <input type="submit" value="Muokkaa"/>
     </form>
-</body>
 <p>
     <a href="/delete/{{post.id}}"> Poista</a>
 </p>
+{% endblock %}

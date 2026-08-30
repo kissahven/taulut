@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Haku</title>
-</head>
-<link rel="stylesheet" href="/static/main.css">
+{% block title %}Haku{% endblock %}
 
-<body>
+{% block content %}
+    <a href="/home">Etusivulle</a>
     <h2>Haku</h2>
   
     <form action="/search_posts" method="get">
@@ -30,6 +27,4 @@
     <br>
     {% endfor %}
     {% endif %}
-</body>
-
-</html>
+{% endblock %}

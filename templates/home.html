@@ -1,33 +1,19 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Taulut</title>
-</head>
+{% block title %}Taulut{% endblock %}
 
-<link rel="stylesheet" href="/static/main.css">
-
-<body>
-    <h1>Taulut</h1>
-  <p>
-    Olet kirjautunut käyttäjällä <a href="/user/{{session.id}}">{{session.username}}</a>
-  </p>
-  <p>
-    <a href="/new_post">Luo uusi taulu</a>
-    <a href="/logout">Kirjaudu ulos</a>
-    <a href="/search_posts">Hae tauluista</a>
-  </p>
+{% block content %}
+<br>
+  <a href="/search_posts">Hae tauluista</a>
   <h2>Postaukset</h2>
+  <br>
+  {%for post in posts %}
+  <div class="box">
+    <a href="/post/{{post.id}}">{{post.title}}</a>
     <br>
-    {%for post in posts %}
-    <div class="box">
-        <a href="/post/{{post.id}}">{{post.title}}</a>
-        <br>
-        {{post.body}}
-    </div>
-    <br>
-    <br>
-    {% endfor %}
-</body>
-
-</html>
+    {{post.body}}
+  </div>
+  <br>
+  <br>
+  {% endfor %}
+{% endblock %}

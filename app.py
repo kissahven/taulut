@@ -65,7 +65,7 @@ def create():
     password1 = request.form["password1"]
     password2 = request.form["password2"]
 
-    if len(username) < 1:
+    if len(username) < 1 or len(username) > 25:
         return "VIRHE: nimi ei sovi"
     if len(password1) < 5:
         return "VIRHE: salasana ei sovi"
@@ -98,9 +98,7 @@ def create_post():
     if not body or len(body) > 7000:
         abort(403)
 
-    #testauusss
     classes = request.form.getlist("classes")
-    print(classes)
 
     all_classes = posts.get_all_classes()
     classes = []
@@ -180,18 +178,23 @@ def update_post():
     return redirect("/post/" + str(post_id))
 
 @app.route("/save_post", methods=["POST"])
-def save_post(post_id):
+def save_post():
     require_login()
     check_csrf()
 
+    post_id = request.form["post_id"]
     post = posts.get_post(post_id)
     if post["poster_id"] == session["user_id"]:
         return "Omat julkaisusi näkyvät aina sivuillasi"
     if not post:
         abort(404)
-
     saver_id = session["user_id"]
-    posts.save_post(post_id, saver_id)
+
+    try:
+        posts.save_post(post_id, saver_id)
+    except sqlite3.IntegrityError:
+        return "Olet jo tallentanut tämän postaukset"
+
     return redirect("/post/" + str(post_id))
 
 @app.route("/delete/<int:post_id>", methods=["GET", "POST"])
@@ -235,6 +238,18 @@ def show_user(user_id):
         abort(404)
     user_posts = users.get_posts(user_id)
     return render_template("user_page.html", user=user, posts=user_posts)
+
+@app.route("/your_page")
+def your_page():
+    require_login()
+
+    user_id = session["user_id"]
+    #user = users.get_user(user_id)
+    #if not user:
+        #abort(404)
+    user_posts = users.get_posts(user_id)
+    saved_posts = posts.get_saves(user_id)
+    return render_template("your_page.html", posts=user_posts, saves=saved_posts)
 
 #Commenting on posts
 @app.route("/new_comment", methods=["POST"])

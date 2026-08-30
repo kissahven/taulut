@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Taulut</title>
-</head>
+{% block title %}Taulut{% endblock %}
 
-<body>
+{% block content %}
   <h1>Kirjautuminen</h1>
   <p>
     <a href="/logout">Kirjaudu ulos</a>
@@ -25,6 +22,4 @@
     Uusi käyttäjä?
     <a href="/register">Luo uusi käyttäjä</a>
   </p>
-</body>
-
-</html>
+{% endblock %}

@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>{{post.title}}</title>
-</head>
-<link rel="stylesheet" href="/static/main.css">
+{% block title %}Taulut{% endblock %}
 
-<body>
+{% block content %}
     <br>
     <a href="/home">Etusivulle</a>
     <h2>{{ post.title }}</h2>
@@ -15,35 +11,44 @@
         #{{class.value}} 
     {% endfor %}
     {% endif %}
+    <br>
+    <br>
     <div class="box">
         {{post.body}}
     </div>
-    <p><a href="/user/{{post.poster_id}}">{{post.username}}</a> </p>
+    <p><a href="/user/{{post.poster_id}}"><b>{{post.username}}</b></a> </p>
         {% if post.poster_id == session.user_id %}
         <p>
             <a href="/edit/{{post.id}}">Muokkaa</a>
             <a href="/delete/{{post.id}}">Poista</a>
         </p>
         {% endif %}
+    {% if session.user_id != post.poster_id %}
+    <form action="/save_post" method="post">
+        <input type="hidden" name="post_id" value="{{post.id}}" />
+        <input type="hidden" name="csrf_token" value="{{session.csrf_token}}" />
+        <input type="submit" value="Tallenna" />
+    </form>
+    {% endif %}
 
     <h3>Kommentit</h3>
     {% for comment in comments %}
-    <p><a href="/user/{{comment.commenter_id}}">{{comment.username}}</a></p>
-    {{comment.comment}}
+        <div class="comment">
+        <p><a href="/user/{{comment.commenter_id}}">{{comment.username}}</a></p>
+        {{comment.comment}}
+        </div>
     <br>
     {% endfor %}
 
     {% if session.user_id %}
     <form action="/new_comment" method="post">
         <p>
-            <textarea name="comment" rows="5" cols="50" maxlength="1000" required></textarea>
+            <textarea name="comment" rows="3" cols="50" maxlength="1000" required></textarea>
         </p>
         <input type="hidden" name="post_id" value="{{post.id}}" />
         <input type="hidden" name="csrf_token" value="{{session.csrf_token}}" />
         <input type="submit" value="Kommentoi" />
     </form>
     {% endif %}
-
-</body>
-
-</html>
+    <br>
+{% endblock %}

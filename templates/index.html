@@ -1,17 +1,10 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Taulut</title>
-</head>
+{% block title %}Taulut{% endblock %}
 
-<link rel="stylesheet" href="/static/main.css">
-
-<body>
+{% block content %}
     <h1>Tervetuloa</h1>
     <br>
     <a href="/login">Kirjaudu</a>
     <a href="/register">Luo tunnukset</a>
-</body>
-
-</html>
+{% endblock %}

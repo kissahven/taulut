@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Rekisteröinti</title>
-</head>
-<link rel="stylesheet" href="/static/main.css">
+{% block title %}Taulut{% endblock %}
 
-<body>
+{% block content %}
   <h1>Luo tunnukset</h1>
   <form action="/create" method="post">
     <p>
@@ -23,6 +19,4 @@
     </p>
     <input type="submit" value="Luo tunnus" />
   </form>
-</body>
-
-</html>
+{% endblock %}

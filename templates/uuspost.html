@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Uusi postaus</title>
-</head>
-<link rel="stylesheet" href="/static/main.css">
+{% block title %}Uusi postaus{% endblock %}
 
-<body>
+{% block content %}
     <h1>Luo uusi julkaisu</h1>
 
   <form action="/create_post" method="post">
@@ -32,6 +28,4 @@
     <input type="hidden" name="csrf_token" value="{{session.csrf_token}}" />
     <input type="submit" value="Postaa" />
   </form>
-</body>
-
-</html>
+{% endblock %}

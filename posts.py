@@ -14,10 +14,10 @@ def get_posts():
     return db.query(sql)
 
 def get_post(post_id):
-    sql = """SELECT i.id, i.poster_id, i.title, i.body, u.id, u.username
-                FROM posts i
-                LEFT JOIN users u ON i.poster_id = u.id
-                WHERE i.id = ?"""
+    sql = """SELECT p.id, p.poster_id, p.title, p.body, u.id, u.username
+                FROM posts p
+                LEFT JOIN users u ON p.poster_id = u.id
+                WHERE p.id = ?"""
     rows = db.query(sql, [post_id])
     return rows[0] if rows else None
 
@@ -58,9 +58,16 @@ def get_comments(post_id):
             WHERE c.post_id = ? """
     return db.query(sql, [post_id])
 
-def save_post(post_id, ):
+def save_post(post_id, saver_id):
     sql = "INSERT INTO saved (post_id, saver_id) VALUES (?, ?)"
-    db.execute(sql, [post_id, ])
+    db.execute(sql, [post_id, saver_id])
+
+def get_saves(saver_id):
+    sql = """SELECT s.post_id, p.title, p.body 
+            FROM saved s
+            LEFT JOIN posts p ON s.post_id = p.id
+            WHERE s.saver_id = ?"""
+    return db.query(sql, [saver_id])
 
 def get_all_classes():
     sql = "SELECT name, value FROM classes"

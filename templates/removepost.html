@@ -1,4 +1,9 @@
-  <form action="/delete/{{ post.id }}" method="post">
+{% extends "layout.html" %}
+
+{% block title %}Taulut{% endblock %}
+
+{% block content %} 
+ <form action="/delete/{{ post.id }}" method="post">
     <p>
       Haluatko varmasti poistaa kyseisen julkaisun?
     </p>
@@ -6,3 +11,4 @@
     <input type="submit" name="continue" value="Poista" />
     <input type="submit" name="cancel" value="Peruuta" />
   </form>
+{% endblock %}
