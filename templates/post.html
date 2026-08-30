@@ -10,6 +10,11 @@
     <br>
     <a href="/home">Etusivulle</a>
     <h2>{{ post.title }}</h2>
+    {% if classes %}
+    {% for class in classes %}
+        #{{class.value}} 
+    {% endfor %}
+    {% endif %}
     <div class="box">
         {{post.body}}
     </div>

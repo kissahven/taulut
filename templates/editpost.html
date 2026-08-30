@@ -19,6 +19,19 @@
             Sisältö: <br />
             <textarea name="body" rows="10" cols="60" maxlength="7000" required>{{post.body}}</textarea>
         </p>
+        {% for class in classes %}
+        <p>
+        {{class}}: <br/>
+        <select name="classes">
+            <option value="">(valitse)</option>
+        {% for option in all_classes[class] %}
+        {% if classes[class] == option %}
+        <option value="{{ class }}:{{ option }}" selected>{{ option }}</option>
+        {% endif %}
+        {% endfor %}
+        </select>
+        </p>
+        {% endfor %}
         <input type="submit" value="Muokkaa"/>
     </form>
 </body>

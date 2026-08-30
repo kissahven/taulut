@@ -47,7 +47,6 @@ def login():
             session["csrf_token"] = secrets.token_hex(16)
             return redirect("/home")
         else:
-            flash("VIRHE: väärä tunnus tai salasana")
             return redirect("/login")
 
 @app.route("/logout")
@@ -66,26 +65,25 @@ def create():
     password1 = request.form["password1"]
     password2 = request.form["password2"]
 
-    #kato virhe ilmoituksia sitten vähä myöhemmin
     if len(username) < 1:
-        return "nimi ei sovi"
-    if len(password1) < 1:
-        return "salasana ei sovi"
+        return "VIRHE: nimi ei sovi"
+    if len(password1) < 5:
+        return "VIRHE: salasana ei sovi"
     if password1 != password2:
-        flash("VIRHE: salasanat eivät täsmää")
-        return redirect("/register")
+        return "VIRHE: salasanat eivät täsmää"
 
     try:
         users.create_user(username, password1)
     except sqlite3.IntegrityError:
-        flash("VIRHE: tunnus on jo varattu")
-        return redirect("/register")
+        return "VIRHE: tunnus on jo varattu"
     return render_template("user_registered.html")
 
 #Posts
 @app.route("/new_post")
-def new_item():
-    return render_template("uuspost.html")
+def new_post():
+    require_login()
+    classes = posts.get_all_classes()
+    return render_template("uuspost.html", classes=classes)
 
 @app.route("/create_post", methods=["POST"])
 def create_post():
@@ -100,14 +98,33 @@ def create_post():
     if not body or len(body) > 7000:
         abort(403)
 
-    posts.add_post(poster_id, title, body)
+    #testauusss
+    classes = request.form.getlist("classes")
+    print(classes)
+
+    all_classes = posts.get_all_classes()
+    classes = []
+    for entry in request.form.getlist("classes"):
+        if entry:
+            class_name, class_value = entry.split(":")
+            if class_name not in all_classes:
+                abort(403)
+            if class_value not in all_classes[class_name]:
+                abort(403)
+            classes.append((class_name, class_value))
+
+    posts.add_post(poster_id, title, body, classes)
     return redirect("/home")
 
 @app.route("/post/<int:post_id>")
 def show_post(post_id):
     post = posts.get_post(post_id)
+    if not post:
+        abort(404)
+    classes = posts.get_post_classes(post_id)
     comments = posts.get_comments(post_id)
-    return render_template("post.html", post=post, comments=comments)
+
+    return render_template("post.html", post=post, comments=comments, classes=classes)
 
 @app.route("/edit/<int:post_id>")
 def edit_post(post_id):
@@ -118,8 +135,15 @@ def edit_post(post_id):
         abort(404)
     if post["poster_id"] != session["user_id"]:
         abort(403)
+    
+    all_classes = posts.get_all_classes()
+    classes = {}
+    for post_class in all_classes:
+        classes[post_class] = ""
+    for entry in posts.get_post_classes(post_id):
+        classes[entry["name"]] = entry["value"]
 
-    return render_template("editpost.html", post=post)
+    return render_template("editpost.html", post=post, classes=classes, all_classes=all_classes)
 
 @app.route("/update_post", methods=["POST"])
 def update_post():
@@ -141,7 +165,33 @@ def update_post():
     if not body or len(body) > 7000:
         abort(403)
 
-    posts.update_post(post_id, title, body)
+    all_classes = posts.get_all_classes()
+    classes = []
+    for entry in request.form.getlist("classes"):
+        if entry:
+            class_name, class_value, = entry.split(":")
+            if class_name not in all_classes:
+                abort(403)
+            if class_value not in all_classes[class_name]:
+                abort(403)
+            classes.append((class_name, class_value))
+
+    posts.update_post(post_id, title, body, classes)
+    return redirect("/post/" + str(post_id))
+
+@app.route("/save_post", methods=["POST"])
+def save_post(post_id):
+    require_login()
+    check_csrf()
+
+    post = posts.get_post(post_id)
+    if post["poster_id"] == session["user_id"]:
+        return "Omat julkaisusi näkyvät aina sivuillasi"
+    if not post:
+        abort(404)
+
+    saver_id = session["user_id"]
+    posts.save_post(post_id, saver_id)
     return redirect("/post/" + str(post_id))
 
 @app.route("/delete/<int:post_id>", methods=["GET", "POST"])
@@ -161,7 +211,6 @@ def remove_post(post_id):
     if request.method == "POST":
         check_csrf()
         if "continue" in request.form:
-            posts.delete_all_comments(post_id)
             posts.remove_post(post_id)
             return redirect("/home")
         else:
