@@ -1,35 +1,42 @@
 CREATE TABLE users (
 id INTEGER PRIMARY KEY,
 username TEXT UNIQUE,
-password_hash TEXT );
+password_hash TEXT 
+);
 
 CREATE TABLE posts (
 id INTEGER PRIMARY KEY,
 poster_id INTEGER REFERENCES users,
 title TEXT,
-body TEXT );
+body TEXT 
+);
 
 CREATE TABLE comments (
 id INTEGER PRIMARY KEY,
 commenter_id INTEGER REFERENCES users,
 post_id INTEGER REFERENCES posts,
-comment TEXT );
+comment TEXT 
+);
 
 CREATE TABLE saved (
 id INTEGER PRIMARY KEY,
 post_id INTEGER REFERENCES posts,
-saver_id INTEGER REFERENCES users);
+saver_id INTEGER REFERENCES users,
+UNIQUE (post_id, saver_id)
+);
 
 CREATE TABLE classes (
 id INTEGER PRIMARY KEY,
 name TEXT,
-value TEXT );
+value TEXT 
+);
 
 CREATE TABLE post_classes (
 id INTEGER PRIMARY KEY,
 post_id REFERENCES posts,
 name TEXT,
-value TEXT );
+value TEXT 
+);
 
 INSERT INTO classes (name, value) VALUES ('tyyli', 'asiallinen');
 INSERT INTO classes (name, value) VALUES ('tyyli', 'asiaton');

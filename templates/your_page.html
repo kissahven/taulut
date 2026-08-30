@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ session.username }}{% endblock %}
+
+{% block content %}
+    <h1>{{session.username}}</h1>
+  <p>
+    <a href="/new_post">Luo uusi julkaisu</a>
+    <a href="/logout">Kirjaudu ulos</a>
+  </p>
+  <h2>Sinun postaukset</h2>
+    <br>
+    {% for post in posts %}
+    <div class="box">
+        <a href="/post/{{post.id}}">{{post.title}}</a>
+        <br>
+        {{post.body}}
+    </div>
+    <br>
+    <br>
+    {% endfor %}
+  <h2>Tallentamasi postaukset</h2> 
+  {% for save in saves %}
+  <div class="comment">
+    <a href="/post/{{save.id}}">{{save.title}}</a>
+    <br>
+    {{save.body}}
+  </div>
+  <br>
+  <br>
+  {% endfor %}
+{% endblock %}
