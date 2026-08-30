@@ -244,9 +244,9 @@ def your_page():
     require_login()
 
     user_id = session["user_id"]
-    #user = users.get_user(user_id)
-    #if not user:
-        #abort(404)
+    user = users.get_user(user_id)
+    if not user:
+        abort(404)
     user_posts = users.get_posts(user_id)
     saved_posts = posts.get_saves(user_id)
     return render_template("your_page.html", posts=user_posts, saves=saved_posts)

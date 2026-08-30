@@ -20,9 +20,10 @@
     <p>
         <br>
         <input type="hidden" name="user_id" value="{{session.id}}" />
-        Olet kirjautunut käyttäjällä <a href="/your_page"><b>{{session.username}}</b></a> <br>
+        Olet kirjautunut käyttäjällä &nbsp; <a href="/your_page"><b>{{session.username}}</b></a> <br>
         <br>
         <a href="/new_post">Luo uusi postaus</a>
+        &nbsp; &nbsp;
         <a href="/logout">Kirjaudu ulos</a>
     </p>
     {% endif %}

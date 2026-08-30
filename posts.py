@@ -66,7 +66,8 @@ def get_saves(saver_id):
     sql = """SELECT s.post_id, p.title, p.body 
             FROM saved s
             LEFT JOIN posts p ON s.post_id = p.id
-            WHERE s.saver_id = ?"""
+            WHERE s.saver_id = ?
+            ORDER BY s.id DESC"""
     return db.query(sql, [saver_id])
 
 def get_all_classes():
